@@ -1,0 +1,96 @@
+{% extends './admin_base.html' %}
+
+{% block title %}
+{% if is_new %}
+    New
+{% else %}
+    Edit {{ title }}
+{% endif %}
+{% endblock %}
+
+{% block head_extra %}
+<link rel='stylesheet' type='text/css' href='/static/{{ conf.style }}/input.css'>
+<link rel='stylesheet' type='text/css' href='/static/{{ conf.style }}/post.css'>
+<link rel='stylesheet' type='text/css' href='/static/{{ conf.style }}/libs/prettify.css'>
+{% endblock %}
+
+{% block body %}
+<table>
+<tr>
+  <td>Title</td>
+  <td><input type='text' id='title' value='{{ title }}' size='40'></td>
+</tr>
+<tr>
+  <td style='vertical-align: top;'>Content</td>
+  <td><textarea id='content' rows='32' cols='100'>{{ content }}</textarea></td>
+</tr>
+<tr><td>Tags</td><td><input type='text' id='tags' value='{{ tags }}' size='40'></td></tr>
+<tr><td><button onclick='NJPress.previewPost()'>Preview</button></td></tr>
+</table>
+
+<script>
+NJPress.previewPost = function() {
+  NJPress.request('/json/previewpost', {
+    title: $('#title')[0].value,
+    content: $('#content').val(),
+    tags: $('#tags').val(),
+  }, function(r) {
+    $('#post_title_preview').html(r.title);
+    $('#post_content_preview').html(r.content);
+    var tagsPreview = $('#tags_preview')[0];
+    tagsPreview.innerHTML = '<th>' + 'Post tags:'.italics() + '</th>';
+    r.tags.map(function(tag) {
+      var cell = tagsPreview.insertCell(-1);
+      cell.innerHTML = NJPress.escape(tag);
+      cell.style.textDecoration = 'underline';
+    });
+    $('#preview_area').css('display', 'block');
+    prettyPrint();
+  });
+};
+</script>
+
+<div id='preview_area' style='display: none;'>
+<hr>
+<p class='post_title' id='post_title_preview'></p>
+<div class='post_content' id='post_content_preview'></div>
+<table class='admin_list tags'><tr id='tags_preview'></tr></table>
+{% if usr.admin %}
+<button onclick='NJPress.submitPost()'>Submit</button>
+<script>
+NJPress.submitPost = function() {
+  NJPress.request('/json/submitpost', {
+    {% if not is_new %}
+      id: {{ id }},
+    {% endif %}
+    title: $('#title')[0].value,
+    content: $('#content').val(),
+    tags: $('#tags').val(),
+  }, function(r) {
+    $('#title').val('');
+    $('#content').val('');
+    $('#tags').val('');
+    window.location = '/?p=' + r.id;
+  });
+};
+</script>
+{% else %}
+This is the preview. You should login as administrator to submit it.
+{% endif %}
+</div>
+
+{% if is_new %}
+<script>
+if (localStorage.cache_title) $('#title').val(localStorage.cache_title);
+if (localStorage.cache_content) $('#content').val(localStorage.cache_content);
+if (localStorage.cache_tags) $('#tags').val(localStorage.cache_tags);
+
+$(window).unload(function() {
+  localStorage.cache_title = $('#title').val();
+  localStorage.cache_content = $('#content').val();
+  localStorage.cache_tags = $('#tags').val();
+});
+</script>
+{% endif %}
+
+{% endblock %}

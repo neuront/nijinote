@@ -1,0 +1,28 @@
+{% extends './admin_base.html' %}
+
+{% block title %}Site Configuration{% endblock %}
+
+{% block head_extra %}
+<link rel='stylesheet' type='text/css' href='/static/{{ conf.style }}/input.css'>
+<style>
+.conf td {
+  vertical-align: top;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<form action='/c/savesiteconf' method='post'>
+<table class='stdlnk conf'>
+<tr>
+  <td>Title</td>
+  <td><input type='text' name='title' value='{{ conf.title|escape }}' size='40'></td>
+</tr>
+<tr>
+  <td>Style</td>
+  <td><input type='text' name='style' value='{{ conf.style|escape }}' size='40'></td>
+</tr>
+<tr><td><input type='submit'></td></tr>
+</table>
+</form>
+{% endblock %}

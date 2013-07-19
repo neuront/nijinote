@@ -1,0 +1,35 @@
+{% extends './admin_base.html' %}
+
+{% block title %}Comments{% endblock %}
+
+{% block head_extra %}
+<link rel='stylesheet' type='text/css' href='/static/{{ conf.style }}/paging.css'>
+<script src='/static/admin.js'></script>
+{% endblock %}
+
+{% block body %}
+<table class='admin_list'></table>
+<div style='margin: 10px;'>
+  <span class='action_button' onclick='NJPress.loadMoreApproved()'>Load more</span>
+  <span class='action_button' onclick="$('#confirm_delete').css('visibility', 'visible')">
+    Delete Selected
+  </span>
+  <span id='confirm_delete' style='visibility: hidden' class='action_button'
+      onclick='NJPress.removeSelected()'>CONFIRM DELETE (CANNOT BE UNDONE)</span>
+</div>
+
+<script>
+NJPress.loadStartIndex = 0;
+
+NJPress.loadMoreApproved = function() {
+  NJPress.loadApprovedComments($('table')[0], NJPress.loadStartIndex,
+                               function() { ++NJPress.loadStartIndex; });
+};
+
+NJPress.loadMoreApproved();
+
+NJPress.removeSelected = function() {
+  NJPress.handleSelected('/json/deletecomments', ':checkbox:checked');
+};
+</script>
+{% endblock %}

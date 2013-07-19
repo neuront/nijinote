@@ -1,0 +1,39 @@
+{% extends './admin_base.html' %}
+
+{% block title %}Pending Comments{% endblock %}
+
+{% block head_extra %}
+<link rel='stylesheet' type='text/css' href='/static/{{ conf.style }}/paging.css'>
+<script src='/static/admin.js'></script>
+{% endblock %}
+
+{% block body %}
+<table class='admin_list'></table>
+<div style='margin: 10px;'>
+  <span class='action_button' onclick='NJPress.approveComments()'>Approve selected</span>
+  <span class='action_button' onclick='NJPress.reload()'>Reload</span>
+  <span class='action_button' onclick="$('#confirm_clear').css('visibility', 'visible')">
+      Clear all
+  </span>
+  <span id='confirm_clear' class='action_button' style='visibility: hidden'
+      onclick='NJPress.clearAll()'>CONFIRM</span>
+</div>
+
+<script>
+NJPress.approveComments = function() {
+  NJPress.handleSelected('/json/approvecomments', ':checkbox:checked');
+};
+
+NJPress.clearAll = function() {
+  NJPress.handleSelected('/json/clearpending', ':checkbox');
+};
+
+NJPress.reload = function() {
+    var table = $('table')[0];
+    table.innerHTML = '';
+    NJPress.loadPendingComments($('table')[0]);
+};
+
+NJPress.reload();
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+.adminbar b {
+  color: #cdb;
+}
+
+.adminbar a[href] {
+  font-weight: bolder;
+  color: #343;
+  margin-left: 10px;
+  background-color: #cdb;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+.adminbar a[href]:hover {
+  color: #454;
+  background-color: #dec;
+  text-decoration: none;
+}
+.adminbar a[href]:active {
+  border: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  color: #565;
+  background-color: #dec;
+}
+
+.admin_list {
+  border-spacing: 12px 4px;
+  width: 800px;
+}
+.admin_list tr:nth-child(even) {
+  background: #222;
+}

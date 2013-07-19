@@ -1,0 +1,51 @@
+<script>
+(function() {
+  var styleArg = NJPress.pageArgs()['style'];
+  if (styleArg && ['midnight', 'rainbow'].indexOf(styleArg) != -1) {
+    localStorage.style = styleArg;
+  } else if (!localStorage.style) localStorage.style = '{{ conf.style }}';
+  NJPress.replaceStyle(localStorage.style);
+})();
+</script>
+<div id='fixtop'>
+    <div class='menu'>
+        <span>Navigate</span>
+        <ul>
+            <li><a href='/'>Home</a></li>
+            <li id='topmenu_tags' style='max-width: 600px;'>
+                <i>Post tags: </i>
+                {% for tag in global_tags %}
+                <a style='font-size: {{ (8 + 16 * tag.rate)|string + "px" }}' href='/?tag={{ tag.name|urlencode }}'>
+                    {{ tag.name|escape }}
+                </a>
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+    <div class='menu'>
+        <span>Styles</span>
+        <ul>
+            <li><a href='javascript:NJPress.replaceStyle("midnight")'>Midnight</a></li>
+            <li><a href='javascript:NJPress.replaceStyle("rainbow")'>Rainbow</a></li>
+        </ul>
+    </div>
+    <div class='menu'>
+        <span id='recent_posts'>Recent Posts</span>
+        <ul>
+            {% for rp in recent_posts %}
+            <li>
+                <a href='/?p={{ rp.id }}'>
+                    {{ rp.title }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% include 'admin_bar.html' %}
+    <div class='access'>
+        <a class='imglink' href='/about'>
+            <img width='32' height='32' alt='About' src='http://images.wikia.com/gardener/images/a/af/Question_mark.png'>
+        </a>
+    </div>
+</div>
+<div id='menumarginer'></div>

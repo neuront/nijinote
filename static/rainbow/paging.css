@@ -1,0 +1,37 @@
+.paging {
+  text-align: center;
+  margin: 12px;
+}
+
+.paging b {
+  padding-left: 2px;
+  padding-right: 2px;
+  color: white;
+  background-color: gray;
+  border-radius: 3px;
+}
+.paging span {
+  padding: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 3px;
+  border: solid 1px gray;
+}
+.paging a[href] {
+  padding: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #468;
+  background-color: #dd9;
+  border-radius: 3px;
+  border: outset 1px #468;
+  text-decoration: none;
+  font-weight: bolder;
+}
+.paging a[href]:hover {
+  color: #468;
+  background-color: #ffa;
+}
+.paging a[href]:active {
+  border: inset 1px;
+}

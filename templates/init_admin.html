@@ -1,0 +1,44 @@
+{% extends './admin_base.html' %}
+
+{% block title %}Create Admin{% endblock %}
+
+{% block head_extra %}
+<link rel='stylesheet' type='text/css' href='/static/{{ conf.style }}/input.css'>
+<script>
+function submit() {
+    NJPress.request('/json/newadmin', {
+        name: $('#name').val(),
+        passwd_origin: $('#passwd').val(),
+    }, function(r) {
+        ({
+            fail: function() {
+                ({
+                    existed: function() {
+                        $('#hint').text('User already existent');
+                    },
+                    admin_existed: function() {
+                        $('#hint').text('An administrator named ' + r.name + ' already exists.');
+                    },
+                    format: function() {
+                        $('#hint').text('Name or password shall be at least 6 characters');
+                    }
+                })[r.reason]();
+            },
+            ok: function() {
+                window.location = '/';
+            }
+        })[r.result]();
+    });
+}
+</script>
+{% endblock %}
+
+{% block body %}
+<h1>Create administrator</h1>
+<p style='color: red;' id='hint'></p>
+<table>
+  <tr><td>Name:</td><td><input type='text' id='name'></td></tr>
+  <tr><td>Password:</td><td><input type='password' id='passwd'></td></tr>
+  <tr><td><input type='submit' onclick='submit()'></td></tr>
+</table>
+{% endblock %}

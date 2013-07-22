@@ -8,6 +8,7 @@ class Post(db.Model):
     date = db.DateTimeProperty(auto_now_add=True)
     title = db.StringProperty(multiline=False)
     content = db.TextProperty()
+    private = db.BooleanProperty()
 
     def init_tags(self, tags):
         self.tags = tags
@@ -18,6 +19,7 @@ def new():
     p.title = ''
     p.tags = []
     p.content = ''
+    p.private = False
     posts = db.Query(Post).order('-pid')
     if posts.count() == 0:
         p.pid = 0

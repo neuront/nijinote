@@ -2,6 +2,7 @@ import base
 import utils.escape
 import models.post
 import models.comment
+import models.user
 
 def index_page(view):
     p = view.request_value('page', int)
@@ -28,6 +29,8 @@ def by_tag(view):
 def single_post(view):
     try:
         post = models.post.by_id(view.request.get('p'))
+        if post.private and not models.user.user(view).admin:
+            return base.raise_forbidden(view)
         view.put_page('post.html', {
             'page_title': utils.escape.esc_title_plain(post.title),
             'post': utils.escape.client_post(post),

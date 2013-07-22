@@ -1,6 +1,7 @@
 from google.appengine.ext import db
 import handlers.base
 
+
 class User(db.Model):
     name = db.StringProperty(multiline=False)
     passwd = db.StringProperty(multiline=False)
@@ -37,9 +38,14 @@ class User(db.Model):
             return User.new('')
         return u[0]
 
+
+def user(handler):
+    return User.get_by_session(handler.request)
+
+
 def admin_only(f):
     def wrapper(handler):
-        if not User.get_by_session(handler.request).admin:
+        if not user(handler).admin:
             return handlers.base.raise_forbidden(handler)
         return f(handler)
     return wrapper

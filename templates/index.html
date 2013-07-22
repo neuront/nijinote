@@ -13,16 +13,12 @@
     <tr>
     <td class='post_cell'>
         <p class='post_title'><a href='/?p={{ post.pid }}'>{{ post.title|safe }}</a></p>
-        <div class='post_content' style='border-bottom: 1px dotted;'>{{ post.preview|safe }}</div>
         <p class='post_date' style='float: left'>
             Posted at {{ post.date|strftime('%b %d %Y - %H:%M:%S') }}
         </p>
         <p style='float: right;'>
         Link: <a href='/?p={{ post.pid }}'>
             <script>document.write(NJPress.location())</script>?p={{ post.pid }}</a>
-        <span class='action_button' onclick='NJPress.loadPostById(this, {{ post.pid }})'>
-            Load full text
-        </span>
         </p>
     </td>
     <td class='tags_cell tags'>
@@ -56,18 +52,4 @@
     </tr>
     {% endif %}
 </table>
-<script>
-NJPress.loadPostById = function(span, id) {
-  NJPress.request('/json/loadpostbyid', { id: id }, function(r) {
-    span.innerHTML = 'Leave comment';
-    var cell = span.parentNode.parentNode;
-    span.onclick = function() {
-      window.location = NJPress.location() + '?p=' + id + '#leavecomment';
-    };
-    var content = cell.getElementsByClassName('post_content')[0];
-    content.style.borderBottom = '1px dashed';
-    content.innerHTML = r.content;
-  });
-};
-</script>
 {% endblock %}

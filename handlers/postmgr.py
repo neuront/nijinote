@@ -2,7 +2,8 @@ import base
 import async
 import utils.escape
 import models.post
-import models.admin
+import models.user
+
 
 class NewPost(base.BaseView):
     def get(self):
@@ -12,6 +13,7 @@ class NewPost(base.BaseView):
             'content': '',
             'tags': '',
         })
+
 
 class Preview(async.AsyncHandler):
     def serve(self):
@@ -24,6 +26,7 @@ class Preview(async.AsyncHandler):
             'tags': [s.strip() for s in tags.split(',')],
         }
 
+
 class Receiver(async.AsyncHandler):
     @models.user.admin_only
     def serve(self):
@@ -35,8 +38,10 @@ class Receiver(async.AsyncHandler):
             post_id = p.pid
         p.title = self.args['title']
         p.content = self.args['content']
+        p.private = self.args['is_private']
         models.post.put(p, [s.strip() for s in self.args['tags'].split(',')])
-        return { 'id': post_id }
+        return {'id': post_id}
+
 
 class List(base.BaseView):
     def get(self):
@@ -47,11 +52,13 @@ class List(base.BaseView):
             'page_count': xrange(models.post.count_pages()),
         })
 
+
 class Delete(base.BaseView):
     @models.user.admin_only
     def post(self):
         models.post.by_id(self.request.get('id')).delete()
         self.redirect('/')
+
 
 class Edit(base.BaseView):
     def get(self):

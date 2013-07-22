@@ -4,15 +4,6 @@ def post_title(p):
         'title': p.title,
     }
 
-def post_preview(p):
-    return dict({
-        'preview': p.preview,
-    }.items() + post_title(p).items())
-
-def post_full(p):
-    return dict({
-        'content': p.content,
-    }.items() + post_title(p).items())
 
 def comment_view(c):
     return {
@@ -22,6 +13,7 @@ def comment_view(c):
         'date': str(c.date),
         'content': c.esc_content,
     }
+
 
 def comment_admin(c):
     return {

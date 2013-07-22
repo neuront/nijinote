@@ -18,7 +18,7 @@
             Posted at {{ post.date|strftime('%b %d %Y - %H:%M:%S') }}
         </p>
         <p style='float: right;'>
-        Permanent Link: <a href='/?p={{ post.pid }}'>
+        Link: <a href='/?p={{ post.pid }}'>
             <script>document.write(NJPress.location())</script>?p={{ post.pid }}</a>
         <span class='action_button' onclick='NJPress.loadPostById(this, {{ post.pid }})'>
             Load full text

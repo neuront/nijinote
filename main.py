@@ -25,6 +25,7 @@ application = webapp2.WSGIApplication([
     ('/json/submitpost', handlers.postmgr.Receiver),
     ('/c/posts', handlers.postmgr.List),
     ('/c/edit', handlers.postmgr.Edit),
+    ('/c/delete', handlers.postmgr.Delete),
     ('/c/comments', render.admin_page_renderer('approved_comments.html')),
     ('/c/pendingcomments', render.admin_page_renderer(
                                     'pending_comments.html')),

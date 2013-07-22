@@ -7,11 +7,11 @@ import models.admin
 class NewPost(base.BaseView):
     def get(self):
         self.put_page('new.html', {
-                'is_new': True,
-                'title': '',
-                'content': '',
-                'tags': '',
-            })
+            'is_new': True,
+            'title': '',
+            'content': '',
+            'tags': '',
+        })
 
 class Preview(async.AsyncHandler):
     def serve(self):
@@ -42,18 +42,24 @@ class List(base.BaseView):
     def get(self):
         p = self.request_value('page', int)
         self.put_page('list_posts.html', {
-                'posts': utils.escape.client_posts(models.post.fetch(p)),
-                'current_page': p,
-                'page_count': xrange(models.post.count_pages()),
-            })
+            'posts': utils.escape.client_posts(models.post.fetch(p)),
+            'current_page': p,
+            'page_count': xrange(models.post.count_pages()),
+        })
+
+class Delete(base.BaseView):
+    @models.user.admin_only
+    def post(self):
+        models.post.by_id(self.request.get('id')).delete()
+        self.redirect('/')
 
 class Edit(base.BaseView):
     def get(self):
         post = models.post.by_id(self.request.get('id'))
         self.put_page('new.html', {
-                'is_new': False,
-                'id': post.pid,
-                'title': post.title,
-                'content': post.content,
-                'tags': ', '.join(post.tags),
-            })
+            'is_new': False,
+            'id': post.pid,
+            'title': post.title,
+            'content': post.content,
+            'tags': ', '.join(post.tags),
+        })

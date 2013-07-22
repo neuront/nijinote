@@ -22,7 +22,14 @@
 </p>
 
 {% if usr.admin %}
-<p><a href='/c/edit?id={{ post.pid }}'>Edit</a></p>
+<form action='/c/delete?id={{ post.pid }}' method='POST'>
+<p><a href='/c/edit?id={{ post.pid }}'>Edit</a>
+<input type='hidden' name='id' value='{{ post.pid }}'>
+<a href='javascript:void(0)' onclick="$('#confirm_delete').css('visibility', 'visible')">Delete</a>
+<input type='submit' id='confirm_delete' style='visibility: hidden'
+       class='action_button' value='CONFIRM DELETE (CANNOT BE UNDONE)'>
+</p>
+</form>
 {% endif %}
 
 {{ conf.post_html|safe }}
